@@ -1,24 +1,27 @@
 const {Router} = require('express');
 const router = Router();
 
+router.get("/", (req, res)=>{
+  res.send("Hello world")
+})
 router.get("/tasks", (req, res)=>{
-  res.send("Retornando una lista de tareas")
+  res.send("RETORNANDO una LISTA de tareas")
 })
 
 router.get("/tasks/10", (req, res)=>{
-  res.send("Retornando una sola tarea")
+  res.send("RETORNANDO una SOLA tarea")
 })
 
 router.post("/tasks", (req, res)=>{
-  res.send("Creando una lista de tareas")
+  res.send("CREANDO una lista de tareas")
 })
 
 router.delete("/tasks", (req, res)=>{
-  res.send("Eliminando una tarea")
+  res.send("ELIMINANDO una tarea")
 })
 
 router.put("/tasks", (req, res)=>{
-  res.send("Actualizando una tarea")
+  res.send("ACTUALIZANDO una tarea")
 })
 
 
