@@ -7,6 +7,8 @@ require("./models/index")
 
 
 app.use(morgan("dev"));
+app.use(express.json());
+
 
 app.use(taskRoutes);
 

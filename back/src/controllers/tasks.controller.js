@@ -1,3 +1,7 @@
+const express = require ("express")
+const tareas = express.Router()
+// para guardar dentro de postgre
+const Task = require ("../models/index")
 
 const saludoInicial= (req, res)=>{
   res.send("Hello world")
@@ -11,8 +15,27 @@ const getTask = async (req, res)=>{
   res.send("RETORNANDO una SOLA tarea")
 }
 
-const createTask = async (req, res)=>{
-  res.send("CREANDO una lista de tareas")
+/* const createTask =  (req, res)=>{
+  const { title, description } = req.body
+  const result =  Task.create({ title, description }).then((user) => res.send(user))
+  
+ // console.log(result);
+
+  //res.send("CREANDO una lista de tareas") 
+} */
+const createTask =  async (req, res)=>{
+  const { title, description } = req.body
+  try {
+    const result = await Task.create({ title, description });
+   // console.log(result);
+    res.status(201).json({
+      title,
+      description
+    })
+  } catch (error) {
+    console.log(error);
+  }
+  
 }
 
 const deleteTask = async (req, res)=>{
