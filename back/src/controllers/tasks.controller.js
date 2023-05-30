@@ -6,9 +6,17 @@ const Task = require ("../models/index")
 const saludoInicial= (req, res)=>{
   res.send("Hello world")
 }
-
+// traer todas las tareas
 const getAllTasks = async (req, res)=>{
-  res.send("RETORNANDO una LISTA de tareas")
+  try {
+    const result = await Task.findAll()
+    //res.status(200).send(result)
+    res.status(200).json({
+      result, // funciona solo con dataValues.result
+    }) 
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
 const getTask = async (req, res)=>{
@@ -23,6 +31,7 @@ const getTask = async (req, res)=>{
 
   //res.send("CREANDO una lista de tareas") 
 } */
+// crear una tarea
 const createTask =  async (req, res)=>{
   const { title, description } = req.body
   try {
