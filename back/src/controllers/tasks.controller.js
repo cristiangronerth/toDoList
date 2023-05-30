@@ -74,8 +74,12 @@ const deleteTask = async (req, res)=>{
 }
 
 
-const updateTask = async (req, res)=>{
-  res.send("ACTUALIZANDO una tarea")
+const updateTask = async (req, res) => {
+  const { id } = req.params
+  const {title, description} = req.body
+  const result = await Task.update({title, description}, {where:{id}})
+  console.log(result);
+  return res.json(result) // no puedo hacer que me muestre como queda en thunderclient
 }
 
 module.exports = {
@@ -84,5 +88,5 @@ module.exports = {
   getTask,
   createTask,
   deleteTask,
-  updateTask
+  updateTask,
 }
