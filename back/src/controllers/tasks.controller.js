@@ -32,7 +32,6 @@ const getTask = async (req, res)=>{
   }
 }
 
-
 /* const createTask =  (req, res)=>{
   const { title, description } = req.body
   const result =  Task.create({ title, description }).then((user) => res.send(user))
@@ -57,8 +56,21 @@ const createTask =  async (req, res)=>{
   
 }
 
+// borrar una tarea
 const deleteTask = async (req, res)=>{
-  res.send("ELIMINANDO una tarea")
+  try {
+    const { id } = req.params
+    const result = await Task.destroy({
+      where:{
+        id: id
+      }})
+      if (result === 0) 
+      return res.status(400).json({message: "Task not found"})
+      res.sendStatus(204) 
+  } catch (error) {
+      console.log(error.message);
+  }
+    
 }
 
 
