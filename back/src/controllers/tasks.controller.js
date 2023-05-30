@@ -11,17 +11,27 @@ const getAllTasks = async (req, res)=>{
   try {
     const result = await Task.findAll()
     //res.status(200).send(result)
-    res.status(200).json({
-      result, // funciona solo con dataValues.result
-    }) 
+    res.status(200).json(
+      result, // funciona solo con {dataValues.result}
+    ) 
   } catch (error) {
     console.log(error.message);
   }
 }
 
+// traer una sola tarea
 const getTask = async (req, res)=>{
-  res.send("RETORNANDO una SOLA tarea")
+  try {
+    const { id } = req.params
+    const result = await Task.findByPk(id)
+      if(result === null) 
+      return res.status(400).json({message:"Task not found"})
+    res.status(200).json({result})
+  } catch (error) {
+      console.log(error.message);
+  }
 }
+
 
 /* const createTask =  (req, res)=>{
   const { title, description } = req.body
