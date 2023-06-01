@@ -6,8 +6,9 @@ const Task = require ("../models/index")
 const saludoInicial= (req, res)=>{
   res.send("Hello world")
 }
+
 // traer todas las tareas
-const getAllTasks = async (req, res)=>{
+const getAllTasks = async (req, res, next)=>{
   try {
     const result = await Task.findAll()
     //res.status(200).send(result)
@@ -15,12 +16,12 @@ const getAllTasks = async (req, res)=>{
       result, // funciona solo con {dataValues.result}
     ) 
   } catch (error) {
-    console.log(error.message);
+      next(error)
   }
 }
 
 // traer una sola tarea
-const getTask = async (req, res)=>{
+const getTask = async (req, res, next)=>{
   try {
     const { id } = req.params
     const result = await Task.findByPk(id)
@@ -28,7 +29,7 @@ const getTask = async (req, res)=>{
       return res.status(400).json({message:"Task not found"})
     res.status(200).json({result})
   } catch (error) {
-      console.log(error.message);
+      next(error)
   }
 }
 
@@ -41,7 +42,7 @@ const getTask = async (req, res)=>{
   //res.send("CREANDO una lista de tareas") 
 } */
 // crear una tarea
-const createTask =  async (req, res)=>{
+const createTask =  async (req, res, next)=>{
   const { title, description } = req.body
   try {
     const result = await Task.create({ title, description });
@@ -51,13 +52,13 @@ const createTask =  async (req, res)=>{
       description
     })
   } catch (error) {
-    console.log(error);
+      next(error)
   }
   
 }
 
 // borrar una tarea
-const deleteTask = async (req, res)=>{
+const deleteTask = async (req, res, next)=>{
   try {
     const { id } = req.params
     const result = await Task.destroy({
@@ -68,18 +69,23 @@ const deleteTask = async (req, res)=>{
       return res.status(400).json({message: "Task not found"})
       res.sendStatus(204) 
   } catch (error) {
-      console.log(error.message);
-  }
-    
+      next(error)
+  } 
 }
 
 
 const updateTask = async (req, res) => {
-  const { id } = req.params
+  try {
+    const { id } = req.params
   const {title, description} = req.body
   const result = await Task.update({title, description}, {where:{id}})
+  if(!result) // (result===null)
+    return res.status(404).json({message:"Task not found"})// no funciona el error
   console.log(result);
   return res.json(result) // no puedo hacer que me muestre como queda en thunderclient
+  } catch (error) {
+      next(error)
+  }
 }
 
 module.exports = {

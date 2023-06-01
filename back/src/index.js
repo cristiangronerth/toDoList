@@ -12,6 +12,12 @@ app.use(express.json());
 
 app.use(taskRoutes);
 
+app.use((err, req, res, next)=>{
+  return res.json({
+    message: err.message
+  })
+})
+
 
 
 db.sync({force: false}).then(()=>{
