@@ -1,6 +1,7 @@
 const S =  require ("sequelize");
+const { dbp } =require('../src/config')
 
-const db = new S ("tasksdb", null, null,{
+const db = new S (dbp.database, null, null,{
   host: "localhost",
   dialect: "postgres",
   logging: false
