@@ -9,8 +9,20 @@ export default function TaskList() {
     const response = await fetch('http://localhost:4000/tasks')
     const data = await response.json()
     setTasks(data);
-
   }
+
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`http://localhost:4000/tasks/${id}`, {
+        method:"DELETE",
+      })
+      setTasks(tasks.filter((task) => task.id !== id))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
 
   useEffect(()=>{
     loadTasks()
@@ -21,11 +33,13 @@ export default function TaskList() {
     <>
       <h1>Lista de Tareas</h1>
       {
-        tasks.map(task => (
+        tasks.map((task) => (
           <Card style={{
             marginBottom: ".7rem",
             backgroundColor:"#1e272e"
-          }}>
+          }}
+            key={task.id}
+          >
             <CardContent style={{
               display:"flex",
               justifyContent:"space-between"
@@ -40,7 +54,7 @@ export default function TaskList() {
                 Edit
               </Button>
 
-              <Button variant="contained" color="warning" onClick={()=>console.log("Eliminar")} style={{marginLeft: ".5rem"}}>
+              <Button variant="contained" color="warning" onClick={()=>handleDelete(task.id)} style={{marginLeft: ".5rem"}}>
                 Eliminar
               </Button>
             </div>
