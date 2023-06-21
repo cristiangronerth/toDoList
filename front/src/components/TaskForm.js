@@ -1,6 +1,6 @@
 import { Button, Card, CardContent, CircularProgress, Grid, TextField, Typography } from '@mui/material'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 
 export default function TaskForm() {
@@ -13,6 +13,7 @@ export default function TaskForm() {
   const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
+  const params = useParams()
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
@@ -33,6 +34,21 @@ export default function TaskForm() {
     setTask({...task, [e.target.name]: e.target.value})
   }
 
+  const loadTask = async (id) => {
+    const res = await fetch(`http://localhost:4000/tasks/${id}`)
+    const data = await res.json()
+    console.log(data);
+    setTask({title: data.title, description: data.description})
+  }
+
+  useEffect(()=>{
+    if (params.id){
+      loadTask(params.id);
+    }
+  },[params.id])
+
+
+
   return (
     <Grid container direction='column' alignItems='center' justifyContent='center'>
       <Grid item xs={3}>
@@ -44,12 +60,12 @@ export default function TaskForm() {
 
             <form onSubmit={handleSubmit}>
               <TextField variant='filled' label='Escriba el titulo' sx={{display:'block', margin:'.5rem 0'}} inputProps={{style:{color:"white"}}} InputLabelProps={{style:{color:"white"}}} 
-              name ="title"
+              name ="title" value={task.title}
               onChange={handleChange}
               />
 
               <TextField variant='filled' label='Escriba la descripcion' multiline rows={4} sx={{display:'block', margin:'.5rem 0'}} inputProps={{style:{color:"white"}}} InputLabelProps={{style:{color:"white"}}}
-                name="description"
+                name="description" value={task.description}
                 onChange={handleChange}
               />
               <Button variant='contained' color='primary' type='submit' disabled={!task.title || !task.description}>
