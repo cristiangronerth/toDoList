@@ -74,17 +74,39 @@ const deleteTask = async (req, res, next)=>{
 }
 
 
-const updateTask = async (req, res) => {
+/* const updateTask = async (req, res) => {
   try {
     const { id } = req.params
-  const {title, description} = req.body
-  const result = await Task.update({title, description}, {where:{id}})
-  if(!result) // (result===null)
-    return res.status(404).json({message:"Task not found"})// no funciona el error
-  console.log(result);
-  return res.json(result) // no puedo hacer que me muestre como queda en thunderclient
+    const {title, description} = req.body
+    
+    const result = await Task.update({title, description}, {where:{id}})
+  
+    if(!result) // (result===null)
+      return res.status(404).json({message:"Task not found"})// no funciona el error
+      console.log(result);
+    return res.json(result) // no puedo hacer que me muestre como queda en thunderclient
+    } catch (error) {
+    next(error)
+  }
+} */
+const updateTask = async (req, res) => {
+  try {
+    const[row, result] = await Task.update(req.body, {
+      where: { id: req.body.id },
+      returning: true
+    })  
+    if(!result)      
+      return res.status(404).json({message:"Task not found"});
+      
+    const tarea = result[0]
+    const payload = {
+      id: tarea.id,
+      title: tarea.title,
+      description: tarea.description
+    }
+    res.status(200).send(payload)
   } catch (error) {
-      next(error)
+    console.log(error);
   }
 }
 
