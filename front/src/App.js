@@ -12,7 +12,8 @@ export default function App() {
         <Routes>
           <Route path='/' element={<TaskList />}/>
           <Route path='/tasks/new' element={<TaskForm />}/>
-          {/* Edith Route */}
+          <Route path='/tasks/:id/edit' element={<TaskForm />}/>
+        
         </Routes>
       </Container>
     </BrowserRouter>
