@@ -24,9 +24,7 @@ export default function TaskList() {
     }
   }
 
-
-
-  useEffect(()=>{
+  useEffect(() => {
     loadTasks()
   },[])
   
@@ -52,7 +50,10 @@ export default function TaskList() {
             </div>
 
             <div> 
-              <Button variant="contained" color="inherit" onClick={()=>navigate(`/tasks/${task.id}/edit`)} >
+              <Button 
+                variant="contained" 
+                color="inherit" 
+                onClick={() => navigate(`/tasks/${task.id}/edit`)} >
                 Edit
               </Button>
 
